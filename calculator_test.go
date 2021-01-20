@@ -9,7 +9,7 @@ import (
 
 func TestAdd(t *testing.T) {
 	t.Parallel()
-	var want float64 = 7
+	var want float64 = 4
 	got := calculator.Add(2, 2)
 
 	if want != got {
@@ -22,7 +22,7 @@ func TestAdd(t *testing.T) {
 
 func TestSubtract(t *testing.T) {
 	t.Parallel()
-	var want float64 = 1
+	var want float64 = 2
 	got := calculator.Subtract(4, 2)
 	if want != got {
 		t.Fatalf("want %f, got %f", want, got)
@@ -75,13 +75,15 @@ func TestDivide(t *testing.T) {
 		desc        string
 		a           float64
 		b           float64
+		c           []float64
 		errExpected bool
 		want        float64
 	}{
 		{
 			desc:        "Teste with a simple operation",
-			a:           4,
+			a:           16,
 			b:           2,
+			c:           []float64{2, 2},
 			errExpected: false,
 			want:        2,
 		},
@@ -101,7 +103,7 @@ func TestDivide(t *testing.T) {
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			got, err := calculator.Divide(tC.a, tC.b)
+			got, err := calculator.Divide(tC.a, tC.b, tC.c...)
 			errorReceived := err != nil
 			if errorReceived != tC.errExpected {
 				t.Fatalf("Undexpected error %s", err)
@@ -125,5 +127,39 @@ func TestAddRandom(t *testing.T) {
 			t.Errorf("want %f---, got %f", want, got)
 		}
 
+	}
+}
+
+func TestSqrt(t *testing.T) {
+	testCases := []struct {
+		desc string
+		sqr  float64
+		want float64
+		err  bool
+	}{
+		{
+			desc: "",
+			sqr:  4,
+			want: 2,
+			err:  false,
+		},
+		{
+			desc: "",
+			sqr:  -4,
+			want: 0,
+			err:  true,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got, err := calculator.Sqrt(tC.sqr)
+			errorReceived := err != nil
+			if errorReceived != tC.err {
+				t.Fatalf("want %f---, got %f", tC.want, got)
+			}
+			if tC.want != got {
+				t.Errorf("want %f, got %f ", tC.want, got)
+			}
+		})
 	}
 }
