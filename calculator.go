@@ -4,6 +4,8 @@ package calculator
 import (
 	"errors"
 	"math"
+	"regexp"
+	"strconv"
 )
 
 // Add takes two numbers and returns the result of adding them together.
@@ -75,6 +77,27 @@ func Sqrt(a float64) (float64, error) {
 	return math.Sqrt(a), nil
 }
 
-// func main() {
-// 	fmt.Println(Divide(8))
-// }
+// ParseString receive a string and return the math cont
+func ParseString(parse string) (float64, error) {
+	reg := regexp.MustCompile(`([0-9]+(\.[0-9]+)?) *([\+\*-\/]) *([0-9]+(\.[0-9]+)?)`)
+	val := reg.FindStringSubmatch(parse)
+	num1, _ := strconv.ParseFloat(val[1], 64)
+	num2, _ := strconv.ParseFloat(val[4], 64)
+	if val[3] == "*" {
+		return Multiply(num1, num2), nil
+	} else if val[3] == "+" {
+		return Add(num1, num2), nil
+	} else if val[3] == "-" {
+		return Subtract(num1, num2), nil
+	} else if val[3] == "/" {
+		return Divide(num1, num2)
+	}
+	return 0, errors.New("Inválido")
+}
+
+//func main() {
+//	teste := " 3.3 / 1.3"
+//	teste1, err := ParseString(teste)
+//	fmt.Printf("%#v\n", teste1)
+//	fmt.Printf("%#v\n", err)
+//}

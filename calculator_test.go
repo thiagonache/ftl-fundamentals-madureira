@@ -163,3 +163,40 @@ func TestSqrt(t *testing.T) {
 		})
 	}
 }
+
+func TestParseString(t *testing.T) {
+	testCases := []struct {
+		desc string
+		calc string
+		want float64
+		err  bool
+	}{
+		{
+			desc: "",
+			calc: "3*2",
+			want: 6,
+			err:  false,
+		},
+		{
+			desc: "",
+			calc: "3  2",
+			want: 0,
+			err:  true,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got, err := calculator.ParseString(tC.calc)
+			errorReceived := err != nil
+			if errorReceived != tC.err {
+				t.Fatalf("want %f---, got %f", tC.want, got)
+
+			}
+
+			if tC.want != got {
+				t.Errorf("want %f, got %f ", tC.want, got)
+			}
+
+		})
+	}
+}
