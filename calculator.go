@@ -83,6 +83,7 @@ func ParseString(parse string) (float64, error) {
 	val := reg.FindStringSubmatch(parse)
 	num1, _ := strconv.ParseFloat(val[1], 64)
 	num2, _ := strconv.ParseFloat(val[4], 64)
+
 	if val[3] == "*" {
 		return Multiply(num1, num2), nil
 	} else if val[3] == "+" {
@@ -94,10 +95,3 @@ func ParseString(parse string) (float64, error) {
 	}
 	return 0, errors.New("Inválido")
 }
-
-//func main() {
-//	teste := " 3.3 / 1.3"
-//	teste1, err := ParseString(teste)
-//	fmt.Printf("%#v\n", teste1)
-//	fmt.Printf("%#v\n", err)
-//}

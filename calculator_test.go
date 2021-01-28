@@ -179,11 +179,18 @@ func TestParseString(t *testing.T) {
 		},
 		{
 			desc: "",
-			calc: "3  2",
+			calc: "1.5 * 3",
+			want: 1.5 * 3,
+			err:  false,
+		},
+		{
+			desc: "",
+			calc: "1.8  3",
 			want: 0,
 			err:  true,
 		},
 	}
+
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			got, err := calculator.ParseString(tC.calc)
